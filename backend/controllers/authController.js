@@ -59,5 +59,19 @@ const login = async (req,res) => {
     }catch(error){
         res.status(500).json({error: error.message});
     }
+};
+const refresh = async (req,res) => {
+    const rf_token = req.cookie.refreshToken;
+    if(!rf_token) return res.status(401).json({message: "No refresh token provided!"});
+    try{
+        const [rows] = await db.query('SELECT * FROM Refresh_tokens WHERE token = ?', [rf_token]);
+        if (rows.length == 0) return res.status(403).json({message: "Invalid refresh token!"});
+        const decode = jwt.verify(rf_token,process.env.JWT_TOKEN_SECRET);
+        const newAccessToken = jwt.sign({id: decode.id}, process.env.JWT_SECRET, {expiresIn: "15m"});
+        res.cookie('accessToken', newAccessToken, {httpOnly: true, secure: false, sameSite: 'lax', maxAge: 15*60*1000});
+        res.status(200).json({message: "Refresh token successfully!"});
+    }catch(error){
+        res.status(500).json({message: error.message});
+    }
 }
 module.exports = { register,login };
