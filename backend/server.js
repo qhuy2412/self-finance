@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 //Import routes
 const authRoute = require("./routes/authRoute")
@@ -9,9 +10,13 @@ const authRoute = require("./routes/authRoute")
 const db = require('./config/db');
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
 
 app.use('/api/auth',authRoute);
 

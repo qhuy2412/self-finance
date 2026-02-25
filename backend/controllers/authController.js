@@ -37,20 +37,25 @@ const login = async (req,res) => {
         if(!isMatch){
             return res.status(401).json({error: "Email or password is incorrect!"});
         }
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
             {id: user.id},
             process.env.JWT_SECRET,
             {expiresIn:"15m"}
         );
-        res.status(200).json({
-            message: "Login successfully!",
-            token : token,
-            user: {
-                userId : user.id,
-                name: user.name,
-                email : user.email
-            }
-        });
+        const refreshToken = jwt.sign(
+            {id:user.id},
+            process.env.JWT_TOKEN_SECRET,
+            {expiresIn: "30d"}
+        );
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate()+30);
+        await db.query('INSERT INTO Refresh_Tokens (user_id, token, expires_at) VALUES (?,?,?)', 
+            [user.id, refreshToken, expiresAt]
+        )
+        const cookieOptions = { httpOnly: true, secure: false, sameSite: 'lax' };
+        res.cookie('accessToken', accessToken, {...cookieOptions, maxAge: 15*60*1000});
+        res.cookie('refreshToken', refreshToken, {...cookieOptions, maxAge:7*24*60*60*1000});
+        res.status(200).json({user: {id: user.id, name: user.name}});
     }catch(error){
         res.status(500).json({error: error.message});
     }
