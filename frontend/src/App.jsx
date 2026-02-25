@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import {AuthProvider} from "./contexts/AuthContext";
+import {AuthProvider} from "./context/authContext";
 import Login from "./pages/Authentication/Login";
 import Register from "./pages/Authentication/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -11,14 +11,14 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route
+          {/* <Route
             path="/"
             element={
               <ProtectedRoute>
                 <Home />
               </ProtectedRoute>
             }
-          />
+          /> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>

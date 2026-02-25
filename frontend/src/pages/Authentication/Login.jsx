@@ -1,59 +1,113 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
 import {
-  MDBBtn,
   MDBContainer,
-  MDBRow,
-  MDBCol,
   MDBCard,
   MDBCardBody,
   MDBInput,
+  MDBBtn,
   MDBIcon,
   MDBCheckbox
-}
-from 'mdb-react-ui-kit';
+} from 'mdb-react-ui-kit';
+import '../../css/Login.css';
 
-function App() {
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setIsLoading(true);
+
+    try {
+
+      await login(email, password);
+
+      navigate('/dashboard');
+    } catch (err) {
+      setErrorMsg(err.response?.data?.error || 'Đăng nhập thất bại, vui lòng thử lại!');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <MDBContainer fluid>
+    <div className="login-background">
+      <MDBContainer fluid className="d-flex justify-content-center align-items-center h-100">
+        <MDBCard className="login-card my-5 mx-auto" style={{ borderRadius: '1rem', maxWidth: '500px' }}>
+          <MDBCardBody className="p-5 d-flex flex-column align-items-center mx-auto w-100">
+            
+            <h2 className="fw-bold mb-2 text-uppercase text-primary">Đăng Nhập</h2>
+            <p className="text-white-50 mb-4">Vui lòng điền email và mật khẩu của bạn!</p>
 
-      <MDBRow className='d-flex justify-content-center align-items-center h-100'>
-        <MDBCol col='12'>
+            <form onSubmit={handleSubmit} className="w-100">
 
-          <MDBCard className='bg-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '500px'}}>
-            <MDBCardBody className='p-5 w-100 d-flex flex-column'>
+              {errorMsg && (
+                <div className="alert alert-danger p-2 text-center" role="alert">
+                  {errorMsg}
+                </div>
+              )}
 
-              <h2 className="fw-bold mb-2 text-center">Sign in</h2>
-              <p className="text-white-50 mb-3">Please enter your login and password!</p>
+              {/* Input Email */}
+              <MDBInput 
+                wrapperClass="mb-4 w-100" 
+                labelClass="text-secondary" 
+                label="Địa chỉ Email" 
+                id="emailInput" 
+                type="email" 
+                size="lg"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              
+              {/* Input Password */}
+              <MDBInput 
+                wrapperClass="mb-4 w-100" 
+                labelClass="text-secondary" 
+                label="Mật khẩu" 
+                id="passwordInput" 
+                type="password" 
+                size="lg"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
 
-              <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg' type='email' size="lg"/>
-              <MDBInput wrapperClass='mb-4 w-100' label='Password' id='formControlLg' type='password' size="lg"/>
+              {/* Ghi nhớ đăng nhập & Quên mật khẩu */}
+              <div className="d-flex justify-content-between mx-4 mb-4">
+                <MDBCheckbox name="flexCheck" value="" id="flexCheckDefault" label="Ghi nhớ tôi" />
+                <a href="#!" className="text-primary text-decoration-none">Quên mật khẩu?</a>
+              </div>
 
-              <MDBCheckbox name='flexCheck' id='flexCheckDefault' className='mb-4' label='Remember password' />
-
-              <MDBBtn size='lg'>
-                Login
+              {/* Nút Submit */}
+              <MDBBtn 
+                type="submit" 
+                size="lg" 
+                className="w-100 mb-4" 
+                disabled={isLoading}
+              >
+                {isLoading ? 'Đang xử lý...' : 'ĐĂNG NHẬP'}
               </MDBBtn>
+            </form>
 
-              <hr className="my-4" />
+            {/* Link sang trang Đăng ký */}
+            <div>
+              <p className="mb-0">Chưa có tài khoản? <Link to="/register" className="text-primary fw-bold text-decoration-none">Đăng ký ngay</Link></p>
+            </div>
 
-              <MDBBtn className="mb-2 w-100" size="lg" style={{backgroundColor: '#dd4b39'}}>
-                <MDBIcon fab icon="google" className="mx-2"/>
-                Sign in with google
-              </MDBBtn>
-
-              <MDBBtn className="mb-4 w-100" size="lg" style={{backgroundColor: '#3b5998'}}>
-                <MDBIcon fab icon="facebook-f" className="mx-2"/>
-                Sign in with facebook
-              </MDBBtn>
-
-            </MDBCardBody>
-          </MDBCard>
-
-        </MDBCol>
-      </MDBRow>
-
-    </MDBContainer>
+          </MDBCardBody>
+        </MDBCard>
+      </MDBContainer>
+    </div>
   );
-}
+};
 
-export default App;
+export default Login;

@@ -1,0 +1,26 @@
+/* src/pages/Authentication/Login.css */
+.login-background {
+  min-height: 100vh;
+  /* Dải màu Gradient hiện đại */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border: none;
+}
+
+/* Hiệu ứng khi hover vào input của MDB */
+.form-outline .form-control:focus ~ .form-notch .form-notch-leading,
+.form-outline .form-control:focus ~ .form-notch .form-notch-middle,
+.form-outline .form-control:focus ~ .form-notch .form-notch-trailing {
+  border-color: #764ba2 !important;
+}
+
+.form-outline .form-control:focus ~ .form-label {
+  color: #764ba2 !important;
+}

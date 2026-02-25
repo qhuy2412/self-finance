@@ -73,5 +73,16 @@ const refresh = async (req,res) => {
     }catch(error){
         res.status(500).json({message: error.message});
     }
-}
-module.exports = { register,login };
+};
+const getMe = async (req,res) => {
+    try{
+        const user = await User.findById(req.user.id);
+        if(!user){
+            return res.status(404).json({error: "User not found!"});
+        }
+        res.status(200).json({user: {id: user.id, name: user.name, email: user.email}});
+    }catch(error){
+        res.status(500).json({error: error.message});
+    }
+};
+module.exports = { register,login, getMe, refresh};

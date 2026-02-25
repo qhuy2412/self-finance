@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import api from "../../services/api";
+import api from "../services/api";
+import { useContext } from "react";
 
 const AuthContext = createContext();
 
@@ -10,10 +11,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await api.get("/api/auth/check");
+        const response = await api.get("/api/auth/me");
         setUser(response.data.user);
       } catch (error) {
-        console.log(error);
+        setUser(null);
       } finally {
         setLoading(false);
       }
