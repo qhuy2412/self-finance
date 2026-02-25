@@ -23,5 +23,36 @@ const register = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-module.exports = { register };
+const login = async (req,res) => {
+    try{
+        const {email,password} = req.body;
+        if(!email || !password){
+            return res.status(400).json({error:"Email or password is required!"});
+        }
+        const user = await User.findByEmail(email);
+        if(!user){
+            return res.status(401).json({error: "Email or password is incorrect!"});
+        }
+        const isMatch = await bcrypt.compare(password, user.password); 
+        if(!isMatch){
+            return res.status(401).json({error: "Email or password is incorrect!"});
+        }
+        const token = jwt.sign(
+            {id: user.id},
+            process.env.JWT_SECRET,
+            {expiresIn:"15m"}
+        );
+        res.status(200).json({
+            message: "Login successfully!",
+            token : token,
+            user: {
+                userId : user.id,
+                name: user.name,
+                email : user.email
+            }
+        });
+    }catch(error){
+        res.status(500).json({error: error.message});
+    }
+}
+module.exports = { register,login };
