@@ -32,7 +32,7 @@ const Register = () => {
 
     try {
       // Bắn request xuống Backend
-      await api.post('/auth/register', { name, email, password });
+      await api.post('/api/auth/register', { name, email, password });
       
       // Nếu thành công, báo xanh và đếm ngược chuyển trang
       setSuccessMsg('Đăng ký thành công! Đang chuyển hướng về Đăng nhập...');
