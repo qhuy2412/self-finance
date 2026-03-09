@@ -24,10 +24,20 @@ const createCategory = async (req, res) => {
         if (!name || !type) {
             return res.status(400).json({ error: "Name and type are required!" });
         }
+        const [existingCategories] = await db.query(
+            'SELECT id FROM Categories WHERE user_id = ? AND name = ? AND type = ? AND deleted_at IS NULL',
+            [userId, name, type]
+        );
+        if(type !== 'income' && type !== 'expense') {
+            return res.status(400).json({ error: "Type must be either 'income' or 'expense'!" });
+        }
+        if (existingCategories.length > 0) {
+            return res.status(400).json({ error: 'Category already exists!' });
+        }
         const categoryId = uuidv4().trim();
         await db.query(
             'INSERT INTO Categories (id, user_id, name, type, color, icon) VALUES (?, ?, ?, ?, ?, ?)',
-            [categoryId, userId, name, type, color, icon]
+            [categoryId, userId, name, type, color || '#12e40f', icon || 'default-icon']
         );
         res.status(201).json({ message: 'Category created successfully!' });
     } catch (error) {
