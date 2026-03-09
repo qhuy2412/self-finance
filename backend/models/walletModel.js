@@ -17,6 +17,13 @@ const Wallet = {
             'UPDATE wallets SET name = ? WHERE id = ?',
             [name, walletId]
         );
+    },
+    checkOwnership: async (walletId, userId) => {
+        const [rows] = await db.query(
+            'SELECT id FROM wallets WHERE id = ? AND user_id = ?',
+            [walletId, userId]
+        );
+        return rows.length > 0;
     }
 };
 module.exports = Wallet;
