@@ -1,0 +1,131 @@
+.hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 1.25rem;
+  padding: 3rem 2.5rem;
+  color: white;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+}
+
+.heroContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.greeting {
+  flex: 1;
+}
+
+.greetingText {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.userName {
+  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+}
+
+.date {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  margin: 0.5rem 0 0 0;
+}
+
+.netWorthSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.netWorthCard {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  min-width: 280px;
+}
+
+.netWorthLabel {
+  font-size: 0.875rem;
+  opacity: 0.85;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.netWorthAmount {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.addTransactionBtn {
+  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.addTransactionBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.addTransactionBtn:active {
+  transform: translateY(-1px);
+}
+
+.plusIcon {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1.5rem;
+  }
+
+  .heroContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .greetingText {
+    font-size: 1.75rem;
+  }
+
+  .netWorthSection {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .netWorthCard {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .addTransactionBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
